@@ -47,6 +47,37 @@
             <!-- Login Section -->
             <div id="loginSection" class="bg-white rounded-2xl shadow-2xl overflow-hidden">
                 <div class="bg-gradient-to-r from-black to-gray-900 p-6 text-white">
+                    @if (session('success'))
+                        <div class="mb-4 flex items-center p-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50"
+                            role="alert">
+                            <svg class="flex-shrink-0 inline w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.894.553l-3 6A1 1 0 007 14h6a1 1 0 00.894-1.447l-3-6A1 1 0 0010 7zm0 7a1 1 0 100-2 1 1 0 000 2z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            <span>{{ session('success') }}</span>
+                        </div>
+                    @endif
+
+                    @if ($errors->any())
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Error!</strong>
+                            <ul class="list-disc list-inside">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                                <svg class="fill-current h-6 w-6 text-red-500" role="button"
+                                    onclick="this.parentElement.parentElement.style.display='none';"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <title>Close</title>
+                                    <path
+                                        d="M14.348 5.652a1 1 0 00-1.414 0L10 8.586 7.066 5.652a1 1 0 10-1.414 1.414L8.586 10l-2.934 2.934a1 1 0 101.414 1.414L10 11.414l2.934 2.934a1 1 0 001.414-1.414L11.414 10l2.934-2.934a1 1 0 000-1.414z" />
+                                </svg>
+                            </span>
+                        </div>
+                    @endif
                     <div class="flex items-center space-x-2 mb-2">
                         <div class="flex space-x-1">
                             <div class="w-4 h-6 bg-black border border-gray-400"></div>
@@ -59,13 +90,14 @@
                 </div>
 
                 <div class="p-8">
-                    <form class="space-y-6">
+                    <form class="space-y-6" action="{{ route('auth.login.store') }}" method="POST">
+                        @csrf
                         <div>
                             <label for="login-email" class="block text-sm font-semibold text-gray-700 mb-2">Email
                                 Address</label>
                             <input id="login-email" type="email" required
                                 class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-gold focus:outline-none transition"
-                                placeholder="student@example.com">
+                                name="email" placeholder="student@example.com">
                         </div>
 
                         <div>
@@ -73,13 +105,13 @@
                                 class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
                             <input id="login-password" type="password" required
                                 class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-gold focus:outline-none transition"
-                                placeholder="Enter your password">
+                                name="password" placeholder="Enter your password">
                         </div>
 
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
                                 <input id="remember-me" type="checkbox"
-                                    class="w-4 h-4 text-gold border-gray-300 rounded focus:ring-gold">
+                                    class="w-4 h-4 text-gold border-gray-300 rounded focus:ring-gold" name="remember">
                                 <label for="remember-me" class="ml-2 text-sm text-gray-700">Remember me</label>
                             </div>
                             <a href="#" class="text-sm text-gold hover:text-dark-gold font-semibold">Forgot

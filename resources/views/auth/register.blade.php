@@ -41,128 +41,146 @@
         </div>
     </nav>
 
-  <div class="min-h-screen flex items-center justify-center bg-gray-50 px-6 py-12">
-  <div class="max-w-6xl w-full grid md:grid-cols-2 gap-8">
-    
-    <!-- Register Section -->
-    <div id="registerSection" class="bg-white rounded-2xl shadow-2xl overflow-hidden">
-        @session('success')
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                <strong class="font-bold">Success!</strong>
-                <span class="block sm:inline">{{ session('success') }}</span>
-                <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-                    <svg class="fill-current h-6 w-6 text-green-500" role="button" onclick="this.parentElement.parentElement.style.display='none';" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 5.652a1 1 0 00-1.414 0L10 8.586 7.066 5.652a1 1 0 10-1.414 1.414L8.586 10l-2.934 2.934a1 1 0 101.414 1.414L10 11.414l2.934 2.934a1 1 0 001.414-1.414L11.414 10l2.934-2.934a1 1 0 000-1.414z"/></svg>
-                </span>
+    <div class="min-h-screen flex items-center justify-center bg-gray-50 px-6 py-12">
+        <div class="max-w-6xl w-full grid md:grid-cols-2 gap-8">
+
+            <!-- Register Section -->
+            <div id="registerSection" class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+                @if (session('success'))
+                    <div class="mb-4 flex items-center p-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50"
+                        role="alert">
+                        <svg class="flex-shrink-0 inline w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.894.553l-3 6A1 1 0 007 14h6a1 1 0 00.894-1.447l-3-6A1 1 0 0010 7zm0 7a1 1 0 100-2 1 1 0 000 2z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span>{{ session('success') }}</span>
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">Error!</strong>
+                        <ul class="list-disc list-inside">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                            <svg class="fill-current h-6 w-6 text-red-500" role="button"
+                                onclick="this.parentElement.parentElement.style.display='none';"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <title>Close</title>
+                                <path
+                                    d="M14.348 5.652a1 1 0 00-1.414 0L10 8.586 7.066 5.652a1 1 0 10-1.414 1.414L8.586 10l-2.934 2.934a1 1 0 101.414 1.414L10 11.414l2.934 2.934a1 1 0 001.414-1.414L11.414 10l2.934-2.934a1 1 0 000-1.414z" />
+                            </svg>
+                        </span>
+                    </div>
+                @endif
+                <div class="bg-gradient-to-r from-red-900 to-red-700 p-6 text-white">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <div class="flex space-x-1">
+                            <div class="w-4 h-6 bg-black border border-gray-400"></div>
+                            <div class="w-4 h-6 bg-red-600 border border-gray-400"></div>
+                            <div class="w-4 h-6 bg-yellow-400 border border-gray-400"></div>
+                        </div>
+                    </div>
+                    <h2 class="text-3xl font-bold">Create Account</h2>
+                    <p class="text-red-100 mt-2">Join our learning community</p>
+                </div>
+
+                <div class="p-8">
+                    <form class="space-y-5" action="{{ route('auth.register.store') }}" method="POST">
+                        @csrf
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="first-name" class="block text-sm font-semibold text-gray-700 mb-2">First
+                                    Name</label>
+                                <input id="first-name" type="text" required
+                                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none transition"
+                                    placeholder="John" name="first_name">
+                            </div>
+                            <div>
+                                <label for="last-name" class="block text-sm font-semibold text-gray-700 mb-2">Last
+                                    Name</label>
+                                <input id="last-name" type="text" required
+                                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none transition"
+                                    name="last_name" placeholder="Doe">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="register-email" class="block text-sm font-semibold text-gray-700 mb-2">Email
+                                Address</label>
+                            <input id="register-email" type="email" required
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none transition"
+                                name="email" placeholder="student@example.com">
+                        </div>
+
+                        <div>
+                            <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">Phone
+                                Number</label>
+                            <input id="phone" type="tel" required
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none transition"
+                                name="phone" placeholder="+254 700 000 000">
+                        </div>
+
+                        <div>
+                            <label for="level" class="block text-sm font-semibold text-gray-700 mb-2">Current German
+                                Level</label>
+                            <select id="level" required
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none transition"
+                                name="german_level">
+                                <option value="">Select your level</option>
+                                <option value="beginner">Beginner (A1-A2)</option>
+                                <option value="intermediate">Intermediate (B1-B2)</option>
+                                <option value="advanced">Advanced (C1-C2)</option>
+                                <option value="not-sure">Not sure yet</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="register-password"
+                                class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                            <input id="register-password" type="password" required
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none transition"
+                                name="password" placeholder="Create a strong password">
+                        </div>
+
+                        <div>
+                            <label for="confirm-password" class="block text-sm font-semibold text-gray-700 mb-2">Confirm
+                                Password</label>
+                            <input id="confirm-password" type="password" required
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none transition"
+                                name="password_confirmation" placeholder="Confirm your password">
+                        </div>
+
+                        <div class="flex items-start">
+                            <input id="terms" type="checkbox" required name="terms_agreement"
+                                class="w-4 h-4 mt-1 text-red-600 border-gray-300 rounded focus:ring-red-600">
+                            <label for="terms" class="ml-2 text-sm text-gray-700">
+                                I agree to the
+                                <a href="#" class="text-red-600 hover:text-red-700 font-semibold">Terms of Service</a>
+                                and
+                                <a href="#" class="text-red-600 hover:text-red-700 font-semibold">Privacy Policy</a>
+                            </label>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition text-lg">
+                            Create Account
+                        </button>
+                    </form>
+
+                    <p class="mt-6 text-center text-sm text-gray-600">
+                        Already have an account?
+                        <a href="{{ route('auth.login') }}" class="text-red-600 hover:text-red-700 font-semibold">Login
+                            here</a>
+                    </p>
+                </div>
             </div>
-        @endsession
-        @if ($errors->any())
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                <strong class="font-bold">Error!</strong>
-                <ul class="list-disc list-inside">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-                <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-                    <svg class="fill-current h-6 w-6 text-red-500" role="button" onclick="this.parentElement.parentElement.style.display='none';" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 5.652a1 1 0 00-1.414 0L10 8.586 7.066 5.652a1 1 0 10-1.414 1.414L8.586 10l-2.934 2.934a1 1 0 101.414 1.414L10 11.414l2.934 2.934a1 1 0 001.414-1.414L11.414 10l2.934-2.934a1 1 0 000-1.414z"/></svg>
-                </span>
-            </div>
-        @endif
-      <div class="bg-gradient-to-r from-red-900 to-red-700 p-6 text-white">
-        <div class="flex items-center space-x-2 mb-2">
-          <div class="flex space-x-1">
-            <div class="w-4 h-6 bg-black border border-gray-400"></div>
-            <div class="w-4 h-6 bg-red-600 border border-gray-400"></div>
-            <div class="w-4 h-6 bg-yellow-400 border border-gray-400"></div>
-          </div>
         </div>
-        <h2 class="text-3xl font-bold">Create Account</h2>
-        <p class="text-red-100 mt-2">Join our learning community</p>
-      </div>
-
-      <div class="p-8">
-        <form class="space-y-5" action="{{ route('auth.register.store') }}" method="POST">
-            @csrf
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label for="first-name" class="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
-              <input id="first-name" type="text" required
-                class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none transition"
-                placeholder="John" name="first_name">
-            </div>
-            <div>
-              <label for="last-name" class="block text-sm font-semibold text-gray-700 mb-2">Last Name</label>
-              <input id="last-name" type="text" required
-                class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none transition" name="last_name"
-                placeholder="Doe">
-            </div>
-          </div>
-
-          <div>
-            <label for="register-email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
-            <input id="register-email" type="email" required
-              class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none transition" name="email"
-              placeholder="student@example.com">
-          </div>
-
-          <div>
-            <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
-            <input id="phone" type="tel" required
-              class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none transition" name="phone"
-              placeholder="+254 700 000 000">
-          </div>
-
-          <div>
-            <label for="level" class="block text-sm font-semibold text-gray-700 mb-2">Current German Level</label>
-            <select id="level" required
-              class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none transition" name="german_level">
-              <option value="">Select your level</option>
-              <option value="beginner">Beginner (A1-A2)</option>
-              <option value="intermediate">Intermediate (B1-B2)</option>
-              <option value="advanced">Advanced (C1-C2)</option>
-              <option value="not-sure">Not sure yet</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="register-password" class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
-            <input id="register-password" type="password" required
-              class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none transition" name="password"
-              placeholder="Create a strong password">
-          </div>
-
-          <div>
-            <label for="confirm-password" class="block text-sm font-semibold text-gray-700 mb-2">Confirm Password</label>
-            <input id="confirm-password" type="password" required
-              class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none transition" name="password_confirmation"
-              placeholder="Confirm your password">
-          </div>
-
-          <div class="flex items-start">
-            <input id="terms" type="checkbox" required name="terms_agreement"
-              class="w-4 h-4 mt-1 text-red-600 border-gray-300 rounded focus:ring-red-600">
-            <label for="terms" class="ml-2 text-sm text-gray-700">
-              I agree to the 
-              <a href="#" class="text-red-600 hover:text-red-700 font-semibold">Terms of Service</a> 
-              and 
-              <a href="#" class="text-red-600 hover:text-red-700 font-semibold">Privacy Policy</a>
-            </label>
-          </div>
-
-          <button type="submit"
-            class="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition text-lg">
-            Create Account
-          </button>
-        </form>
-
-        <p class="mt-6 text-center text-sm text-gray-600">
-          Already have an account?
-          <a href="{{ route('auth.login') }}" class="text-red-600 hover:text-red-700 font-semibold">Login here</a>
-        </p>
-      </div>
     </div>
-  </div>
-</div>
 
     <!-- Benefits Section -->
     <section class="bg-white py-16">

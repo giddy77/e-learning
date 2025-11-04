@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class RegisterController extends Controller
 {
@@ -29,8 +30,11 @@ class RegisterController extends Controller
      */
     public function store(Request $request)
     {
+        Log::info('RegisterController@store called', $request->all());
         $request->validate([
             'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'german_level' => 'nullable|string|max:255',
@@ -38,15 +42,17 @@ class RegisterController extends Controller
 
         try {
             User::create([
-                'name' => $request->name,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'phone' => $request->phone,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
                 'german_level' => $request->german_level,
             ]);
 
-            return redirect()->route('auth.login')->with('success', 'Registration successful. Please log in.');
+            return redirect()->back()->with('success', 'Registration successful. Please log in.');
         } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'Registration failed. Please try again.']);
+            return back()->withErrors(['error' => 'Registration failed. ', $e->getMessage()]);
         }
 
     }

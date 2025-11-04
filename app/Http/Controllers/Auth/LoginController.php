@@ -28,7 +28,26 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
+
+        try {
+            $credentials = $request->only('email', 'password');
+
+            if (auth()->attempt($credentials)) {
+                $request->session()->regenerate();
+                return redirect()->intended('dashboard');
+            }
+
+            return back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ]);
+
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Login failed. ', $e->getMessage()]);
+        }
     }
 
     /**
